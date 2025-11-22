@@ -1,0 +1,7 @@
+# depslib dependency file v1.0
+1763822319 source:/mnt/omv1share1/Workspace/csv2qif/csv2qif.cpp
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<ctype.h>
+

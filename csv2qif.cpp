@@ -33,12 +33,14 @@ int main(int argc, char *argv[]) {
     }
 
     FILE *fin = fopen(argv[1], "r");
+    // FILE *fin = fopen("/home/bruno/Downloads/stmt.csv", "r");
     if (!fin) {
         perror("Error opening input file");
         return 1;
     }
 
     FILE *fout = fopen(argv[2], "w");
+    // FILE *fout = fopen("/home/bruno/Downloads/test.qif", "w");
     if (!fout) {
         perror("Error opening output file");
         fclose(fin);
@@ -65,14 +67,16 @@ int main(int argc, char *argv[]) {
             continue;
         }
 
-        // Never consider a line containing the Beginning balance as
-        // though it was a transaction.  This takes care of eliminating
+        // Now we are in the transaction section. Parse line.
+
+        // ... but first ...
+        // Never consider a line containing the "Beginning balance"
+        // as though it was a transaction.  This takes care of eliminating
         // the Beginning balance line that comes after the header line.
         if (strstr(line, "Beginning balance as of")) {
             continue;
         }
 
-        // Now we are in the transaction section. Parse line.
         char tmp[MAX_LINE];
         strcpy(tmp, line);
 
@@ -92,7 +96,10 @@ int main(int argc, char *argv[]) {
 
         remove_commas(amount);
 
-        // Skip lines where amount is empty (e.g., initial balance line)
+        // Skip lines where amount is empty.
+        // This could have taken care of the initial balance
+        // line except that using strtok with back-to-back
+        // delimiters blows past the null amount field in that line
         if (strlen(amount) == 0) {
             continue;
         }
